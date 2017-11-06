@@ -11,7 +11,7 @@ ROOT=$(pwd)
 PATCHES="${ROOT}/patches"
 SOURCES="${ROOT}/sources"
 
-mkdir $SOURCES
+mkdir -p $SOURCES
 
 function log {
 	echo -e "\e[33m$1\e[39m $2"
@@ -61,14 +61,25 @@ while (( "$#" )); do
 			# Copy patches
 			log ENTITYX "Copying and applying patches"
 			cp -v "${PATCHES}/devkitPPC.cmake" "${SOURCES}/${ENTITYX_DIR}/"
-			patch "${SOURCES}/${ENTITYX_DIR}/CMakeLists.txt" "${PATCHES}/entityx-CMakeLists.txt.patch"
-			check "Failed to patch required files for building entityx"
+
+			if grep --quiet entityx_wii "${SOURCES}/${ENTITYX_DIR}/CMakeLists.txt"; then
+				log ENTITYX "CMakeLists patch already applied, skipping..."
+			else
+				patch "${SOURCES}/${ENTITYX_DIR}/CMakeLists.txt" "${PATCHES}/entityx-CMakeLists.txt.patch"
+				check "Failed to patch required files for building entityx"
+			fi
+
+			# Delete build folder if already exists
+			if [[ -d "${SOURCES}/entityx-build" ]]; then
+				log ENTITYX "Build folder found, deleting it..."
+				rm -r "${SOURCES}/entityx-build"
+			fi
 
 			# Generate project and build it
-			mkdir "${SOURCES}/entityx-build"
+			mkdir -p "${SOURCES}/entityx-build"
 			cd "${SOURCES}/entityx-build"
 
-			cmake "${SOURCES}/${ENTITYX_DIR}" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALLDIR}" -G "Unix Makefiles"
+			cmake "${SOURCES}/${ENTITYX_DIR}" -DENTITYX_DT_TYPE="float" -DENTITYX_MAX_COMPONENTS="32" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALLDIR}" -G "Unix Makefiles"
 			check "Could not generate project for entityx"
 
 			make clean all
