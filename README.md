@@ -20,3 +20,7 @@ Currently supports:
 
 Nothing else planned right now.
 
+## Licenses
+
+The licenses for the project compiled by this project can be found under the `licenses` folder in the following files:
+ - [EntityX](https://github.com/alecthomas/entityx) -> `LICENSE-entityx.txt` (MIT)
