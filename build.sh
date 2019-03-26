@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 cd "$(dirname "$0")/"
 
-INSTALLDIR="${DEVKITPRO}/ppc-portlibs"
+INSTALLDIR="${DEVKITPRO}/portlibs/ppc"
 
 ENTITYX=entityx
 ENTITYX_HASH=6389b1f91598c99d85e56356fb57d9f4683071d8
