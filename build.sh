@@ -43,7 +43,7 @@ function get_src {
 			log $1 "${FILE} found, extracting archive"
 		else
 			log $1 "${FILE} not found, fetching from network and extracting"
-			wget -O $FILE --no-check-certificate $URL
+			wget -q -O $FILE --no-check-certificate $URL
 			check "Could not download ${FILE} from ${URL}"
 		fi
 		unzip $FILE
