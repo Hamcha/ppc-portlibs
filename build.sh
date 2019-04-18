@@ -80,13 +80,13 @@ while (( "$#" )); do
 			mkdir -p "${SOURCES}/entityx-build"
 			cd "${SOURCES}/entityx-build"
 
-			cmake "${SOURCES}/${ENTITYX_DIR}" -DENTITYX_DT_TYPE="float" -DENTITYX_MAX_COMPONENTS="32" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALLDIR}" -G "Unix Makefiles"
+			cmake "${SOURCES}/${ENTITYX_DIR}" -DENTITYX_DT_TYPE="float" -DENTITYX_MAX_COMPONENTS="32" -DENTITYX_BUILD_TESTING="false" -DENTITYX_BUILD_SHARED="false" -DCMAKE_BUILD_TYPE="MINSIZEREL" -DCMAKE_INSTALL_PREFIX:PATH="${INSTALLDIR}" -G "Unix Makefiles"
 			check "Could not generate project for entityx"
 
-			make clean all
+			make clean all -j
 			check "Got error while building entityx"
 
-			make install
+			sudo make install
 			check "Got error while installing entityx"
 			;;
 	esac
